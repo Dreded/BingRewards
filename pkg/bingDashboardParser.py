@@ -193,7 +193,10 @@ def parseDashboardPage(page, bing_url):
             #if the reward is a quiz and fully complete
             if rewardDescription.get_text().find('You did it!') != -1:
                 rDscSplit = rewardDescription.get_text().split(' ')
-                rewardProgressMax = int(rDscSplit[rDscSplit.index('points.')-1])
+                try:
+                    rewardProgressMax = int(rDscSplit[rDscSplit.index('points.')-1])
+                except ValueError: #probably Canada site so try without period because Canadians have bad grammar
+                    rewardProgressMax = int(rDscSplit[rDscSplit.index('points')-1])
                 rewardProgressCurrent = rewardProgressMax 
             #Grab the point totals for 'HIT' rewards - we're using these as a marker to set the 'HIT' type
             hits = checkForHit(currAction, rewardProgressCurrent, rewardProgressMax, links[i])
